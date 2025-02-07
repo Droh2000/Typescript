@@ -1,0 +1,80 @@
+La sección se enfoca en la depuración de errores y comprender el archivo de configuración de TypeScript (el tsconfig.json)
+
+Dentro del archivo encontramos todas las propiedaes y tenemos en las comentadas
+y descomentadas el valor por defecto recomendado
+
+En la pagina de la documentacion podremos ver otras propieades que le podemos configurar
+Usualmente cuando creamos un framework con el uso de Typescript este ya viene configurado de la manera correcta
+
+Lo que pasa es que al crear un Console.Log() del archivo y ver en la consola del navegador la imprecion obtendremos que nos
+dice que la linea de codigo esta en cierto numero la realidad es que esta en otra linea
+
+¿Es posible la depuracion del codigo Typescript?
+
+El problema de tener las lineas de codigo que no se indican en la ubicacion real es porque estamos trabajando en TS no en JS
+por lo tanto lo importante es saber la linea pero en TS para eso hacemos una configuracion en el "tsconfig.json"
+    Dentro del archivo descomentamos la linea de "sourceMap=True"
+    * Depues de una modificacion de este archivo tenemos que detener la ejecucion y volver a ejecutar el comando del
+            - TSC -W
+    * Despues de hacer eso se nos generara un tercer archivo con la extencion .MAP que seria como un mapa a la representacion propia que tiene el codigo en TS
+
+    Ahora al mirar las lineas de codigo en la consola de navegador veremos que si nos indica las lineas de codigo en el archivo de TS
+    Al mirar internamente los archivos en la pestana Sources del navegador veremos que tiene el archivo JS que es el que toma el index
+    e internamente en la carpeta esta el archivo TS (Cuando generamos un proyecto de produccion podemos quitar estos archivos)
+    
+    Al estar dentro del archivo TS en el navegador podemos creer que no podemos Breakpoints
+    en alguna lineas y esto es porque si es codigo 100% de Typescript que no tiene representacion en JS no se podra
+    pero en otras lineas de codigo si
+
+Remover los comentarios de los archivos de JavaScript
+
+    Si comentamos un archivo de TS estos se transcopilan a los archivos de JS, esto seria un comportamiento por defecto
+    para quitar los comentarios en los archivo de JS nos vamos al Tsconfig.json
+        removeComments: true
+
+    Asi podemos ligrerar los archivos que si se estan ejecutando que son los de JS
+
+Incluir y Excluir Carpetas o Archivos
+
+    En ocaciones queremos evitar que TS entre a ciertas rutas para que no haga la transcopilacion del codigo
+    ya que por defecto TS detecna algunos directorios de frameworks donde no entra pero si creamos otros nosotros con otros nombres
+    veremos que TS por defecto no convirtio el codigo de TS a JS
+
+    Para controlar esto nos vamos al Tsconfig,json
+        Al final despues de que se cierra el objeto ponemos una coma y ponemos lo siguiente
+            "exclude":{
+                // Aqui adentro ponemos todas las rutas, archivos o exprecciones regulares para evitar que entre a ciertas rutas
+                "ruta/*.ts"
+            }
+        Para obligar a TS que entre a ciertos directorios y compile a JS aunque por defecto no lo haga:
+            "include":{
+                "Carpeta"
+            }
+
+OutFile - Archivo de Salida
+
+Para no tener un monton de archivos que anden flotando por todo el proyecto donde entremos y veamos 2 Js por un TS
+Lo mejor que podemos hacer es juntar toda nuestra aplicacion de JS o los arhivos de TS en un unico archivo de JS o varios segun lo que requiramos
+Es comun ver que todo nuestro codigo de TS temrine resumido a un unico archivo (Si ya estamos trabajando en un framework o libreria entonces esta 
+configuracion ya esta hecha y no tenemos que andar moviendo nada)
+
+ Si nos vamos al Tsconfig.json tenemos la propiedad:
+    - outDir: Que es el directorio de Salida
+    - outFile: El nombre del archivo en el cual queremos la transpilacion completa
+    Como ejemplo configuramos lo siguiente:
+        * outFile: "./main.js" -> Que nos cree ese archivo
+        Al modificar esta linea podemos tener errores y eso es porque en la linea
+        "module" es "commonJS" donde no funciona la configuracion que estamos agregando asi que tenemos que cambiarlo
+        a "amd"
+
+    Despues de crear el main veremos que no tiene nada, esto es porque puede que tenamos definido al final el "include" y o lo agreagmos
+    el main o quitamos toda esa linea de codigo
+
+    Ahora veremos que en el Main toma todos los archiov TS y los mete en su version de JS a este archivo
+    Despues de hacer esto podemos eliminar todos los archivos que nos genero de JS para cada uno de los TS
+    El objetivo es solo tener archivos de TS
+    Aun asi si activamos para que nos diga la lineas de codigo donde se encuentra veremos que aunque ahora todo esta en el MAin veramos que las referencias a sus archivos de TS
+    las sigue manteniendo 
+
+    Si puede que tengamos un error y se nos muestra en la consola del navegador veremos que igual se nos indicara en el navegador
+    el archivo de TS que tiene el errro
