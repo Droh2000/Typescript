@@ -1,0 +1,3 @@
+Para no tener un monton de imports ya que si tenemos muchas interfaces asi 
+que debemos agruparlas
+    El nombre de este archivo debe ser index.ts (Este se cargara por defecto cuando hacemos referencia al directorio)
