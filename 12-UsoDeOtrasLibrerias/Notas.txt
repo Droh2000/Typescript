@@ -1,0 +1,2 @@
+Como poder utilizar TS cuando la libreria que estamos utilizando no tiene soporte en TS
+ya que no fueron escritas en el mismo
