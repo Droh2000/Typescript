@@ -1,6 +1,6 @@
 // Nosotros hemos estado creando las funciones anonimas autoinvocadas y esto podria considerarse como un namespace
 // el problema esta en que no podemos acceder a los elementos que contiene dentro
-// Los namespace nis sirve de agrupador para que podamos utilizarlo en cualquier otro lado
+// Los namespace nos sirve de agrupador para que podamos utilizarlo en cualquier otro lado
 namespace Validations {
     // Para poder usar estas funciones fuera tenemos que exportarlas
     // Exportamos solo lo que queremos que se pueda acceder desde afuera del namespace
